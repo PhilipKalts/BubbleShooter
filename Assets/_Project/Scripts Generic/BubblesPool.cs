@@ -21,18 +21,18 @@ public class BubblesPool : MonoBehaviour
 
     private void Awake()
     {
-        GameObject poolObject = new GameObject("Bubbles Pool");
-        poolObject.transform.parent = transform;
-        for (int i = 0; i < poolDepth; i++)
-        {
-            GameObject newGameObject = Instantiate(bubble.gameObject);
-            Bubble newBubble = newGameObject.GetComponent<Bubble>();
+        //GameObject poolObject = new GameObject("Bubbles Pool");
+        //poolObject.transform.parent = transform;
+        //for (int i = 0; i < poolDepth; i++)
+        //{
+        //    GameObject newGameObject = Instantiate(bubble.gameObject);
+        //    Bubble newBubble = newGameObject.GetComponent<Bubble>();
 
 
-            pool.Add(newBubble);
-            newBubble.gameObject.SetActive(false);
-            newBubble.transform.parent = poolObject.transform;
-        }
+        //    pool.Add(newBubble);
+        //    newBubble.gameObject.SetActive(false);
+        //    newBubble.transform.parent = poolObject.transform;
+        //}
     }
 
 

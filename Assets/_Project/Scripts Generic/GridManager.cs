@@ -1,4 +1,5 @@
 using UnityEngine;
+using DG.Tweening;
 
 /*
 The purpose of this script is: to generate the grid in which
@@ -15,11 +16,12 @@ public class GridManager : MonoBehaviour
     public int TotalWinPoints;
     [SerializeField] Tile tilePrefab;
     [SerializeField] Bubble bubblePrefab;
-
+    [SerializeField] SOLevels levelSO;
 
 
     private void Start()
     {
+        height = levelSO.Height[levelSO.CurrentLevel];
         TotalWinPoints = width * height;
         AllBubbles = new Bubble[width, height];
         GenerateGrid();
@@ -66,7 +68,15 @@ public class GridManager : MonoBehaviour
 
     void DecreaseBubbles()
     {
-        transform.position = new Vector3(-2, transform.position.y - 1, 0f);
+        transform.DOMoveY(transform.position.y - 1, 0.2f);
+        for (int x = 0; x < width; x++)
+        {
+            for (int y = 0; y < height; y++)
+            {
+                if (AllBubbles[x, y].gameObject.activeSelf) return;
+            }
+        }
+        GameManager.Instance.OnGameWin?.Invoke();
     }
 
 

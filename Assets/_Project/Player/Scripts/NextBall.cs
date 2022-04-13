@@ -10,6 +10,7 @@ public class NextBall : MonoBehaviour
 {
     public int Points { get; private set; }
     public int SpawnsForDecrease;
+    [SerializeField] SOLevels levelsSO;
 
     int index;
     GameObject player;
@@ -22,6 +23,7 @@ public class NextBall : MonoBehaviour
 
     private void Awake()
     {
+        SpawnsForDecrease = levelsSO.SpawnForDecrease[levelsSO.CurrentLevel];
         player = GameObject.Find("Player");
         spriteRenderer = GetComponent<SpriteRenderer>();
         playerPoints = player.GetComponent<PlayerPoints>();

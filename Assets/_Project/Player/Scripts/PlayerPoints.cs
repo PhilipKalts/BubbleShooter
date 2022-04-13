@@ -18,7 +18,7 @@ public class PlayerPoints : MonoBehaviour
     int index;      //the index which coordinates the colour and number of points from the ColourManager script
     TextMeshPro textChild;
     Vector3 startingPos;
-    int currentPoints;
+    public int currentPoints;
 
     ///***Components***///
     Transform myTransform;

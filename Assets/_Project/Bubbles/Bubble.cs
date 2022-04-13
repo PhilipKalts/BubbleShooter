@@ -1,6 +1,7 @@
-using System.Collections;
 using TMPro;
 using UnityEngine;
+using DG.Tweening;
+using System.Collections;
 
 /*
 The purpose of this script is:
@@ -10,13 +11,14 @@ public class Bubble : MonoBehaviour
 {
     public int Points { get; private set; }
 
-    TextMeshPro textChild;
+    TextMeshPro textChild, textUnparent;
     SpriteRenderer spriteRenderer;
 
     [HideInInspector] public int[] closeX, closeY;
     int index;
 
     BoxCollider2D boxCollider;
+    BubbleUnparentedTxt unparentedTxt;
 
     private void OnEnable()
     {
@@ -34,10 +36,26 @@ public class Bubble : MonoBehaviour
         closeY[2] = posY - 1;
     }
 
+    private void OnDisable()
+    {
+        if (textUnparent == null) return;
+
+        unparentedTxt.Points = Points;
+        textUnparent.text = Points.ToString();
+        textUnparent.transform.position = transform.position;
+        textUnparent.gameObject.SetActive(true);
+    }
+
+    
+
     private void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
         textChild = transform.GetChild(0).GetComponent<TextMeshPro>();
+        textUnparent = transform.GetChild(1).GetComponent<TextMeshPro>();
+        unparentedTxt = textUnparent.gameObject.GetComponent<BubbleUnparentedTxt>();
+        textUnparent.rectTransform.SetParent(GameObject.Find("=====GENERAL=====").transform, false);
+        textUnparent.gameObject.SetActive(false);
 
 
         index = Random.Range(0, GameManager.Instance.ColourManager.Points.Length - 7);
@@ -45,8 +63,7 @@ public class Bubble : MonoBehaviour
         Points = GameManager.Instance.ColourManager.Points[index];
         textChild.text = Points.ToString();
 
-        spriteRenderer.color = GameManager.Instance.ColourManager.Colors[index];
-
+        spriteRenderer.color = GameManager.Instance.ColourManager.GetColour(Points);
         boxCollider = GetComponent<BoxCollider2D>();
         boxCollider.enabled = false;
     }
@@ -123,9 +140,9 @@ public class Bubble : MonoBehaviour
         textChild.text = Points.ToString();
         if (Points >= 2048)
         {
-            GameManager.Instance.OnBubbleDestroy(Points);
+            //GameManager.Instance.OnBubbleDestroy(Points);
             boxCollider.enabled = true;
-            Invoke("Deactivacte", 0.3f);
+            Invoke("Deactivacte", 0.2f);
         }
         // Rule of 3
         // 2048 -> 1
@@ -145,7 +162,7 @@ public class Bubble : MonoBehaviour
 
     public void GetDestroyedByBubble()
     {
-        GameManager.Instance.OnBubbleDestroy(Points);
+        
         gameObject.SetActive(false);
     }
 
